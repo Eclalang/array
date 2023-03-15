@@ -117,3 +117,75 @@ func lessThan(a interface{}, b interface{}) bool {
 		return false
 	}
 }
+
+// Function that sorts the array in ascending order
+func (a *Array) SortAsc() {
+	sort.Slice(a.values, func(i, j int) bool {
+		switch a.values[i].(type) {
+		case int:
+			return a.values[i].(int) < a.values[j].(int)
+		case string:
+			return a.values[i].(string) < a.values[j].(string)
+		default:
+			return false
+		}
+	})
+}
+
+// Function that sorts the array in descending order
+func (a *Array) SortDesc() {
+	sort.Slice(a.values, func(i, j int) bool {
+		switch a.values[i].(type) {
+		case int:
+			return a.values[i].(int) > a.values[j].(int)
+		case string:
+			return a.values[i].(string) > a.values[j].(string)
+		default:
+			return false
+		}
+	})
+}
+
+// Function that returns the maximum value in the array
+func (a *Array) Max() interface{} {
+	if len(a.values) == 0 {
+		return nil
+	}
+
+	max := a.values[0]
+	for i := 1; i < len(a.values); i++ {
+		if lessThan(max, a.values[i]) {
+			max = a.values[i]
+		}
+	}
+	return max
+}
+
+// Function that returns the minimum value in the array
+func (a *Array) Min() interface{} {
+	if len(a.values) == 0 {
+		return nil
+	}
+
+	min := a.values[0]
+	for i := 1; i < len(a.values); i++ {
+		if lessThan(a.values[i], min) {
+			min = a.values[i]
+		}
+	}
+	return min
+}
+
+// Function that slices the array from start to end
+func (a *Array) Slice(start, end int) *Array {
+	if start < 0 {
+		start = 0
+	}
+	if end > a.Length() {
+		end = a.Length()
+	}
+	if start >= end {
+		return NewArray()
+	}
+	return &Array{values: a.values[start : end+1]}
+}

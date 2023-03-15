@@ -112,4 +112,27 @@ func TestArray(t *testing.T) {
 	fmt.Println(index)
 	fmt.Printf("arr : ")
 	arr.Print()
+	max := arr.Max()
+	fmt.Println("Max :", max)
+	if max != 21 {
+		t.Error("Max is not 21")
+	} else {
+		fmt.Println("Function Max is working successfully")
+	}
+	min := arr.Min()
+	fmt.Println("Min :", min)
+	if min != 1 {
+		t.Error("Min is not 1")
+	} else {
+		fmt.Println("Function Min is working successfully")
+	}
+	arr.SortAsc()
+	fmt.Printf("arr : ")
+	arr.Print()
+	arr.SortDesc()
+	fmt.Printf("arr : ")
+	arr.Print()
+	arr9 := arr.Slice(1, 3)
+	fmt.Printf("sliced arr9 : ")
+	arr9.Print()
 }
