@@ -37,6 +37,10 @@ func (a *Array) Length() int {
 
 // Function that removes the value at the index
 func (a *Array) Remove(index int) {
+	if index < 0 || index >= len(a.values) {
+		return
+	}
+
 	a.values = append(a.values[:index], a.values[index+1:]...)
 }
 
@@ -79,4 +83,37 @@ func (a *Array) Sort(comparator func(interface{}, interface{}) bool) {
 	sort.Slice(a.values, func(i, j int) bool {
 		return comparator(a.values[i], a.values[j])
 	})
+}
+
+// Function that returns the index of the value in the array using binary search
+func (a *Array) BinarySearch(value interface{}) int {
+	return binarySearch(a.values, value, 0, len(a.values)-1)
+}
+
+func binarySearch(values []interface{}, value interface{}, left int, right int) int {
+	if right < left {
+		fmt.Println("Value not found")
+		return -1
+	}
+
+	mid := (left + right) / 2
+
+	if values[mid] == value {
+		return mid
+	} else if lessThan(value, values[mid]) {
+		return binarySearch(values, value, left, mid-1)
+	} else {
+		return binarySearch(values, value, mid+1, right)
+	}
+}
+
+func lessThan(a interface{}, b interface{}) bool {
+	switch a.(type) {
+	case int:
+		return a.(int) < b.(int)
+	case string:
+		return a.(string) < b.(string)
+	default:
+		return false
+	}
 }

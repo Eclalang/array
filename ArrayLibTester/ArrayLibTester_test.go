@@ -42,17 +42,19 @@ func TestArray(t *testing.T) {
 	} else {
 		fmt.Println("Array[2] is set successfully")
 	}
+	arr.Remove(2)
+	if arr.Get(2) == 0 {
+		t.Error("Array[2] is not removed")
+	} else {
+		fmt.Println("Array[2] is removed successfully")
+	}
+	fmt.Printf("arr : ")
+	arr.Print()
 	arr.Set(1, 4)
 	if arr.Get(1) != 4 {
 		t.Error("Array[1] is not 4")
 	} else {
 		fmt.Println("Array[1] is set successfully")
-	}
-	arr.Remove(2)
-	if arr.Get(2) == 28 {
-		t.Error("Array[2] is not removed")
-	} else {
-		fmt.Println("Array[2] is removed successfully")
 	}
 	fmt.Printf("arr : ")
 	arr.Print()
@@ -103,6 +105,11 @@ func TestArray(t *testing.T) {
 		}
 	}
 	fmt.Println("Function Sort is working successfully")
+	index := arr.BinarySearch(4)
+	fmt.Println(index)
+
+	index = arr.BinarySearch(10)
+	fmt.Println(index)
 	fmt.Printf("arr : ")
 	arr.Print()
 }
