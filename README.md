@@ -1,4 +1,4 @@
-# ARRAY LIBRARY FOR ECLA
+## ARRAY LIBRARY FOR ECLA
 
 # Candidate functions :
 
