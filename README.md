@@ -2,22 +2,14 @@
 
 # Candidate functions :
 
-|   Func Name    |                                                       Prototype                                                       |                                            Description                                            | Comments |
-|:--------------:|:---------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------:|:--------:|
-|    NewArray    |                                              func NewArray() interface{}                                              |                                Function that initializes the array                                |   N/A    |
-|      Add       |                            func Add(array []interface{}, value interface{}) []interface{}                             |                            Function that appends a value to the array                             |   N/A    |
-|      Get       |                                 func Get(array []interface{}, index int) interface{}                                  |                           Function that returns the value at the index                            |   N/A    |
-|      Set       |                              func Set(array []interface{}, index int, value interface{})                              |                             Function that sets the value at the index                             |   N/A    |
-|     Length     |                                         func Length(array []interface{}) int                                          |                           Function that returns the length of the array                           |   N/A    |
-|     Remove     |                               func Remove(array []interface{}, index int) []interface{}                               |                           Function that removes the value at the index                            |   N/A    |
-|     Print      |                                            func Print(array []interface{})                                            |                                  Function that prints the array                                   |   N/A    |
-|      Map       |                      func Map(array []interface{}, fn func(interface{}) interface{}) interface{}                      |     Func that maps over the array and returns a new array with the result of the function fn      |   N/A    |
-|     Filter     |                        func Filter(array []interface{}, fn func(interface{}) bool) interface{}                        |  Func that filters the array and returns a new array with the filtered values of the function fn  |   N/A    |
-|     Reduce     | func Reduce(array []interface{}, fn func(interface{}, interface{}) interface{}, initialValue interface{}) interface{} |  Func that reduces the array and returns a new array with the reduced values of the function fn   |   N/A    |
-|      Sort      |                    func Sort(array []interface{}, comparator func(interface{}, interface{}) bool)                     |              Func that sorts the array, this sort depends on the comparator function              |   N/A    |
-|  BinarySearch  |                             func BinarySearch(array []interface{}, value interface{}) int                             |           Function that returns the index of the value in the array using binary search           |   N/A    |
-|    SortAsc     |                                           func SortAsc(array []interface{})                                           |                         Function that sorts the array in ascending order                          |   N/A    |
-|    SortDesc    |                                          func SortDesc(array []interface{})                                           |                         Function that sorts the array in descending order                         |   N/A    |
-|      Max       |                                       func Max(array []interface{}) interface{}                                       |                       Function that returns the maximum value in the array                        |   N/A    |
-|      Min       |                                       func Min(array []interface{}) interface{}                                       |                       Function that returns the minimum value in the array                        |   N/A    |
-|     Slice      |                              func Slice(array []interface{}, start, end int) interface{}                              |                         Function that slices the array from start to end                          |   N/A    |
+|   Func Name    |                                  Prototype                                   |                           Description                           | Comments |
+|:--------------:|:----------------------------------------------------------------------------:|:---------------------------------------------------------------:|:--------:|
+|      Add       |                  func Add(array []any, value any) []any {}                   |                  Appends a value to the array                   |   N/A    |
+|     Length     |                       func Length(array []any) int {}                        |                 Returns the length of the array                 |   N/A    |
+|     Remove     |                 func Remove(array []any, index int) []any {}                 |           Removes the value of the array at the index           |   N/A    |
+|  BinarySearch  |               func BinarySearch(array []any, value any) int {}               | Returns the index of the value in the array using binary search |   N/A    |
+|    SortAsc     |                         func SortAsc(array []any) {}                         |               Sorts the array in ascending order                |   N/A    |
+|    SortDesc    |                        func SortDesc(array []any) {}                         |               Sorts the array in descending order               |   N/A    |
+|      Max       |                         func Max(array []any) any {}                         |             Returns the maximum value in the array              |   N/A    |
+|      Min       |                         func Min(array []any) any {}                         |             Returns the minimum value in the array              |   N/A    |
+|     Slice      |                func Slice(array []any, start, end int) any {}                |               Slices the array from start to end                |   N/A    |
