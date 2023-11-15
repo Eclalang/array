@@ -4,135 +4,285 @@ import (
 	"fmt"
 	"testing"
 
-	list "github.com/Eclalang/array"
+	lib "github.com/Eclalang/array"
 )
 
-func TestArray(t *testing.T) {
-	arr := list.NewArray()
-	if arr == nil {
-		t.Error("Array is nil")
-	}
-	arr.Add(1)
-	arr.Add(28)
-	arr.Add(0)
-	arr.Add(8)
-	arr.Add(5)
-	arr.Add(21)
-	arr.Add(7)
-	arr.Add(10)
-	fmt.Printf("arr : ")
-	arr.Print()
-	if arr.Length() != 8 {
-		t.Error("Array length is not 3")
-	} else {
-		fmt.Println("Array length is set successfully")
-	}
-	if arr.Get(0) != 1 {
-		t.Error("Array[0] is not 1")
-	} else {
-		fmt.Println("Array[0] is set successfully")
-	}
-	if arr.Get(1) != 28 {
-		t.Error("Array[1] is not 2")
-	} else {
-		fmt.Println("Array[1] is set successfully")
-	}
-	if arr.Get(2) != 0 {
-		t.Error("Array[2] is not 3")
-	} else {
-		fmt.Println("Array[2] is set successfully")
-	}
-	arr.Remove(2)
-	if arr.Get(2) == 0 {
-		t.Error("Array[2] is not removed")
-	} else {
-		fmt.Println("Array[2] is removed successfully")
-	}
-	fmt.Printf("arr : ")
-	arr.Print()
-	arr.Set(1, 4)
-	if arr.Get(1) != 4 {
-		t.Error("Array[1] is not 4")
-	} else {
-		fmt.Println("Array[1] is set successfully")
-	}
-	fmt.Printf("arr : ")
-	arr.Print()
-	fmt.Println("arr length :", arr.Length())
-	if arr.Length() != 7 {
-		t.Error("Array length is not 7")
-	} else {
-		fmt.Println("Array length is set successfully")
-	}
-	arr2 := arr.Map(func(v interface{}) interface{} {
-		return v.(int) * 5
-	})
-	for i := 0; i < arr2.Length(); i++ {
-		if arr2.Get(i) != arr.Get(i).(int)*5 {
-			t.Error("Function Map is not working properly")
-		}
-	}
-	fmt.Println("Function Map is working successfully")
-	arr3 := arr.Filter(func(v interface{}) bool {
-		return v.(int) > 2
-	})
-	fmt.Printf("arr3 : ")
-	arr3.Print()
-	for i := 0; i < arr3.Length(); i++ {
-		if arr3.Get(i).(int) < 2 {
-			t.Error("Function Filter is not working properly")
-		}
-	}
-	fmt.Println("Function Filter is working successfully")
-	arr4 := arr.Reduce(func(v interface{}, acc interface{}) interface{} {
-		return v.(int) + acc.(int)
-	}, 0)
-	sum := 0
-	for i := 0; i < arr.Length(); i++ {
-		sum += arr.Get(i).(int)
-	}
-	if arr4.(int) != sum {
-		t.Error("Array4 is not the sum of Array")
-	} else {
-		fmt.Println("Function Reduce is working successfully")
-	}
-	arr.Sort(func(a interface{}, b interface{}) bool {
-		return a.(int) < b.(int)
-	})
-	for i := 0; i < arr.Length()-1; i++ {
-		if arr.Get(i).(int) > arr.Get(i+1).(int) {
-			t.Error("Array is not sorted")
-		}
-	}
-	fmt.Println("Function Sort is working successfully")
-	index := arr.BinarySearch(4)
-	fmt.Println(index)
+// TestAppend test the function Append with type int, float(64), string and boolean
+func TestAppend(t *testing.T) {
+	arr := make([]any, 0)
 
-	index = arr.BinarySearch(10)
-	fmt.Println(index)
-	fmt.Printf("arr : ")
-	arr.Print()
-	max := arr.Max()
-	fmt.Println("Max :", max)
-	if max != 21 {
-		t.Error("Max is not 21")
+	arr = lib.Append(arr, 1)
+	arr = lib.Append(arr, 2)
+	arr = lib.Append(arr, 1.1)
+	arr = lib.Append(arr, 2.2)
+	arr = lib.Append(arr, "one")
+	arr = lib.Append(arr, "two")
+	arr = lib.Append(arr, true)
+	arr = lib.Append(arr, false)
+
+	if arr[0] == 1 && arr[1] == 2 {
+		fmt.Println("Yes | Array Append is set successfully for int")
 	} else {
-		fmt.Println("Function Max is working successfully")
+		t.Error("No | Array Append isn't set successfully for int")
 	}
-	min := arr.Min()
-	fmt.Println("Min :", min)
-	if min != 1 {
-		t.Error("Min is not 1")
+	if arr[2] == 1.1 && arr[3] == 2.2 {
+		fmt.Println("Yes | Array Append is set successfully for float(64)")
 	} else {
-		fmt.Println("Function Min is working successfully")
+		t.Error("No | Array Append isn't set successfully for float(64)")
 	}
-	arr.SortAsc()
-	fmt.Printf("arr : ")
-	arr.Print()
-	arr.SortDesc()
-	fmt.Printf("arr : ")
-	arr.Print()
-	arr9 := arr.Slice(1, 3)
-	fmt.Printf("sliced arr9 : ")
-	arr9.Print()
+	if arr[4] == "one" && arr[5] == "two" {
+		fmt.Println("Yes | Array Append is set successfully for string")
+	} else {
+		t.Error("No | Array Append isn't set successfully for string")
+	}
+	if arr[6] == true && arr[7] == false {
+		fmt.Println("Yes | Array Append is set successfully for boolean")
+	} else {
+		t.Error("No | Array Append isn't set successfully for boolean")
+	}
+}
+
+// TestLength test the function Length with array of type int, float(64), string and boolean
+func TestLength(t *testing.T) {
+	arrInt := []any{1, 2, 3, 4, 5}
+	arrFloat := []any{1.1, 2.2, 3.3, 4.4, 5.5}
+	arrString := []any{"one", "two", "three", "four", "five"}
+	arrBool := []any{true, false, true, false, true}
+
+	if lib.Length(arrInt) == 5 {
+		fmt.Println("Yes | Array Length is set successfully for int")
+	} else {
+		t.Error("No | Array Length isn't set successfully for int")
+	}
+	if lib.Length(arrFloat) == 5 {
+		fmt.Println("Yes | Array Length is set successfully for float(64)")
+	} else {
+		t.Error("No | Array Length isn't set successfully for float(64)")
+	}
+	if lib.Length(arrString) == 5 {
+		fmt.Println("Yes | Array Length is set successfully for string")
+	} else {
+		t.Error("No | Array Length isn't set successfully for string")
+	}
+	if lib.Length(arrBool) == 5 {
+		fmt.Println("Yes | Array Length is set successfully for boolean")
+	} else {
+		t.Error("No | Array Length isn't set successfully for boolean")
+	}
+}
+
+// TestRemove test the function Remove with array of type int, float(64), string and boolean
+func TestRemove(t *testing.T) {
+	arrInt := []any{1, 2, 3, 4, 5}
+	arrFloat := []any{1.1, 2.2, 3.3, 4.4, 5.5}
+	arrString := []any{"one", "two", "three", "four", "five"}
+	arrBool := []any{true, false, true, false, true}
+
+	arrInt = lib.Remove(arrInt, 2)
+	arrFloat = lib.Remove(arrFloat, 2)
+	arrString = lib.Remove(arrString, 2)
+	arrBool = lib.Remove(arrBool, 2)
+
+	if arrInt[2] == 4 {
+		fmt.Println("Yes | Array Remove is set successfully for int")
+	} else {
+		t.Error("No | Array Remove isn't set successfully for int")
+	}
+	if arrFloat[2] == 4.4 {
+		fmt.Println("Yes | Array Remove is set successfully for float(64)")
+	} else {
+		t.Error("No | Array Remove isn't set successfully for float(64)")
+	}
+	if arrString[2] == "four" {
+		fmt.Println("Yes | Array Remove is set successfully for string")
+	} else {
+		t.Error("No | Array Remove isn't set successfully for string")
+	}
+	if arrBool[2] == false {
+		fmt.Println("Yes | Array Remove is set successfully for boolean")
+	} else {
+		t.Error("No | Array Remove isn't set successfully for boolean")
+	}
+}
+
+// TestFind test the function Find with array of type int, float, string and boolean
+func TestFind(t *testing.T) {
+	arr := []any{1, 2, 3.3, 4.4, "five", "six", true, false}
+
+	if lib.Find(arr, 1) == 0 && lib.Find(arr, 2) == 1 {
+		fmt.Println("Yes | Array Find is set successfully for int")
+	} else {
+		t.Error("No | Array Find isn't set successfully for int")
+	}
+	if lib.Find(arr, 3.3) == 2 && lib.Find(arr, 4.4) == 3 {
+		fmt.Println("Yes | Array Find is set successfully for float(64)")
+	} else {
+		t.Error("No | Array Find isn't set successfully for float(64)")
+	}
+	if lib.Find(arr, "five") == 4 && lib.Find(arr, "six") == 5 {
+		fmt.Println("Yes | Array Find is set successfully for string")
+	} else {
+		t.Error("No | Array Find isn't set successfully for string")
+	}
+	if lib.Find(arr, true) == 6 && lib.Find(arr, false) == 7 {
+		fmt.Println("Yes | Array Find is set successfully for boolean")
+	} else {
+		t.Error("No | Array Find isn't set successfully for boolean")
+	}
+}
+
+// TestContain test the function Contain with array of type int, float, string and boolean
+func TestContain(t *testing.T) {
+	arr := []any{1, 2, 3.3, 4.4, "five", "six", true, false}
+
+	if lib.Contain(arr, 1) == true && lib.Contain(arr, 2) == true && lib.Contain(arr, 3) == false {
+		fmt.Println("Yes | Array Find is set successfully for int")
+	} else {
+		t.Error("No | Array Find isn't set successfully for int")
+	}
+	if lib.Contain(arr, 3.3) == true && lib.Contain(arr, 4.4) == true && lib.Contain(arr, 5.5) == false {
+		fmt.Println("Yes | Array Find is set successfully for float(64)")
+	} else {
+		t.Error("No | Array Find isn't set successfully for float(64)")
+	}
+	if lib.Contain(arr, "five") == true && lib.Contain(arr, "six") == true && lib.Contain(arr, "seven") == false {
+		fmt.Println("Yes | Array Find is set successfully for string")
+	} else {
+		t.Error("No | Array Find isn't set successfully for string")
+	}
+	if lib.Contain(arr, true) == true && lib.Contain(arr, false) == true {
+		fmt.Println("Yes | Array Find is set successfully for boolean")
+	} else {
+		t.Error("No | Array Find isn't set successfully for boolean")
+	}
+}
+
+// TestIsEqual test the function IsEqual with array of type int, float(64), string and boolean
+func TestIsEqual(t *testing.T) {
+	arrOne := []any{1, 2, 3.3, 4.4, "five", "six", true, false}
+	arrTwo := []any{1, 2, 3.3, 4.4, "five", "six", true, false}
+	arrThree := []any{1, 2, 3, 4, 5, 6}
+	arrFour := []any{2, 1, 3.3, 4.4, "five", "six", false, true}
+
+	if lib.IsEqual(arrOne, arrTwo) {
+		fmt.Println("Yes | Array IsEqual is set successfully when same")
+	} else {
+		t.Error("No | Array IsEqual isn't set successfully when same")
+	}
+	if !lib.IsEqual(arrOne, arrThree) && !lib.IsEqual(arrOne, arrFour) {
+		fmt.Println("Yes | Array IsEqual is set successfully when different")
+	} else {
+		t.Error("No | Array IsEqual isn't set successfully when different")
+	}
+}
+
+// TestSortAsc test the function SortAsc with array of type int, float(64) and string
+func TestSortAsc(t *testing.T) {
+	arrInt := []any{3, 6, 9, 2, 5, 8, 0, 1, 4, 7}
+	arrIntExpected := []any{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	arrFloat := []any{3.3, 6.6, 9.9, 2.2, 5.5, 8.8, 0.0, 1.1, 4.4, 7.7}
+	arrFloatExpected := []any{0.0, 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9}
+	arrString := []any{"a", "ccc", "bb", "eeeee", "dddd"}
+	arrStringExpected := []any{"a", "bb", "ccc", "dddd", "eeeee"}
+
+	lib.SortAsc(arrInt)
+	lib.SortAsc(arrFloat)
+	lib.SortAsc(arrString)
+
+	if lib.IsEqual(arrInt, arrIntExpected) {
+		fmt.Println("Yes | Array SortAsc is set successfully for int")
+	} else {
+		t.Error("No | Array SortAsc isn't set successfully for int")
+	}
+	if lib.IsEqual(arrFloat, arrFloatExpected) {
+		fmt.Println("Yes | Array SortAsc is set successfully for float(64)")
+	} else {
+		t.Error("No | Array SortAsc isn't set successfully for float(64)")
+	}
+	if lib.IsEqual(arrString, arrStringExpected) {
+		fmt.Println("Yes | Array SortAsc is set successfully for string")
+	} else {
+		t.Error("No | Array SortAsc isn't set successfully for string")
+	}
+}
+
+// TestSortDesc test the function SortAsc with array of type int, float(64) and string
+func TestSortDesc(t *testing.T) {
+	arrInt := []any{3, 6, 9, 2, 5, 8, 0, 1, 4, 7}
+	arrIntExpected := []any{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
+	arrFloat := []any{3.3, 6.6, 9.9, 2.2, 5.5, 8.8, 0.0, 1.1, 4.4, 7.7}
+	arrFloatExpected := []any{9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 0.0}
+	arrString := []any{"a", "ccc", "bb", "eeeee", "dddd"}
+	arrStringExpected := []any{"eeeee", "dddd", "ccc", "bb", "a"}
+
+	lib.SortDesc(arrInt)
+	lib.SortDesc(arrFloat)
+	lib.SortDesc(arrString)
+
+	if lib.IsEqual(arrInt, arrIntExpected) {
+		fmt.Println("Yes | Array SortDesc is set successfully for int")
+	} else {
+		t.Error("No | Array SortDesc isn't set successfully for int")
+	}
+	if lib.IsEqual(arrFloat, arrFloatExpected) {
+		fmt.Println("Yes | Array SortDesc is set successfully for float(64)")
+	} else {
+		t.Error("No | Array SortDesc isn't set successfully for float(64)")
+	}
+	if lib.IsEqual(arrString, arrStringExpected) {
+		fmt.Println("Yes | Array SortDesc is set successfully for string")
+	} else {
+		t.Error("No | Array SortDesc isn't set successfully for string")
+	}
+}
+
+// TestMax test the function Max with array of type int, float(64) and string
+func TestMax(t *testing.T) {
+	arrInt := []any{1, 20, 300, 44, 56}
+	arrFloat := []any{100.1, 20.2, 3.346598, 458.9, 5.5}
+	arrString := []any{"one", "two", "three", "four", "five"}
+
+	if lib.Max(arrInt) == 300 {
+		fmt.Println("Yes | Array Max is set successfully for int")
+	} else {
+		t.Error("No | Array Max isn't set successfully for int")
+	}
+	if lib.Max(arrFloat) == 458.9 {
+		fmt.Println("Yes | Array Max is set successfully for float(64)")
+	} else {
+		t.Error("No | Array Max isn't set successfully for float(64)")
+	}
+	if lib.Max(arrString) == "three" {
+		fmt.Println("Yes | Array Max is set successfully for string")
+	} else {
+		t.Error("No | Array Max isn't set successfully for string")
+	}
+}
+
+// TestMin test the function Min with array of type int, float(64) and string
+func TestMin(t *testing.T) {
+	arrInt := []any{1, 20, 300, 44, 56}
+	arrFloat := []any{100.1, 20.2, 3.346598, 458.9, 5.5}
+	arrString := []any{"one", "two", "three", "four", "five"}
+
+	if lib.Min(arrInt) == 1 {
+		fmt.Println("Yes | Array Min is set successfully for int")
+	} else {
+		t.Error("No | Array Min isn't set successfully for int")
+	}
+	if lib.Min(arrFloat) == 3.346598 {
+		fmt.Println("Yes | Array Min is set successfully for float(64)")
+	} else {
+		t.Error("No | Array Min isn't set successfully for float(64)")
+	}
+	if lib.Min(arrString) == "one" || lib.Min(arrString) == "two" {
+		fmt.Println("Yes | Array Min is set successfully for string")
+	} else {
+		t.Error("No | Array Min isn't set successfully for string")
+	}
+}
+
+// todo
+func TestSlice(t *testing.T) {
+
 }
