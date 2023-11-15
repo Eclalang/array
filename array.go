@@ -99,7 +99,7 @@ func lessThan(a any, b any) bool {
 // Remove the value at the index
 func Remove(array []any, index int) []any {
 	if index < 0 || index >= len(array) {
-		panic("Error | The index isn't in the array")
+		return array
 	}
 	array = append(array[:index], array[index+1:]...)
 	return array
