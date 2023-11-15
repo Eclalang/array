@@ -10,18 +10,15 @@ func Append(array []any, value any) []any {
 	return array
 }
 
-// Length returns the length of the array
-func Length(array []any) int {
-	return len(array)
-}
-
-// Remove the value at the index
-func Remove(array []any, index int) []any {
-	if index < 0 || index >= len(array) {
-		panic("Error | The index isn't in the array")
+// Contain test if the value is in the array return True if inside and False if not inside
+func Contain(array []any, value any) bool {
+	size := Length(array)
+	for i := 0; i < size; i++ {
+		if array[i] == value {
+			return true
+		}
 	}
-	array = append(array[:index], array[index+1:]...)
-	return array
+	return false
 }
 
 // Find returns the index of the value in the array
@@ -33,17 +30,6 @@ func Find(array []any, value any) int {
 		}
 	}
 	return -1
-}
-
-// Contain test if the value is in the array return True if inside and False if not inside
-func Contain(array []any, value any) bool {
-	size := Length(array)
-	for i := 0; i < size; i++ {
-		if array[i] == value {
-			return true
-		}
-	}
-	return false
 }
 
 // IsEqual test two array and return true if same or false if different
@@ -61,36 +47,9 @@ func IsEqual(FirstArray, SecondArray []any) bool {
 	}
 }
 
-// SortAsc sorts the array in ascending order
-func SortAsc(array []any) {
-	sort.Slice(array, func(i, j int) bool {
-		switch array[i].(type) {
-		case int:
-			return array[i].(int) < array[j].(int)
-		case float64:
-			return array[i].(float64) < array[j].(float64)
-		case string:
-			return array[i].(string) < array[j].(string)
-		default:
-			return false
-		}
-	})
-}
-
-// SortDesc sorts the array in descending order
-func SortDesc(array []any) {
-	sort.Slice(array, func(i, j int) bool {
-		switch array[i].(type) {
-		case int:
-			return array[i].(int) > array[j].(int)
-		case float64:
-			return array[i].(float64) > array[j].(float64)
-		case string:
-			return array[i].(string) > array[j].(string)
-		default:
-			return false
-		}
-	})
+// Length returns the length of the array
+func Length(array []any) int {
+	return len(array)
 }
 
 // Max returns the maximum value in the array
@@ -137,6 +96,15 @@ func lessThan(a any, b any) bool {
 	}
 }
 
+// Remove the value at the index
+func Remove(array []any, index int) []any {
+	if index < 0 || index >= len(array) {
+		panic("Error | The index isn't in the array")
+	}
+	array = append(array[:index], array[index+1:]...)
+	return array
+}
+
 // Slice the array from start to end included
 func Slice(array []any, start, end int) []any {
 	var arrRet []any
@@ -154,4 +122,36 @@ func Slice(array []any, start, end int) []any {
 		arrRet = append(arrRet, array[i])
 	}
 	return arrRet
+}
+
+// SortAsc sorts the array in ascending order
+func SortAsc(array []any) {
+	sort.Slice(array, func(i, j int) bool {
+		switch array[i].(type) {
+		case int:
+			return array[i].(int) < array[j].(int)
+		case float64:
+			return array[i].(float64) < array[j].(float64)
+		case string:
+			return array[i].(string) < array[j].(string)
+		default:
+			return false
+		}
+	})
+}
+
+// SortDesc sorts the array in descending order
+func SortDesc(array []any) {
+	sort.Slice(array, func(i, j int) bool {
+		switch array[i].(type) {
+		case int:
+			return array[i].(int) > array[j].(int)
+		case float64:
+			return array[i].(float64) > array[j].(float64)
+		case string:
+			return array[i].(string) > array[j].(string)
+		default:
+			return false
+		}
+	})
 }
