@@ -1,11 +1,8 @@
 package array
 
 import (
-	"fmt"
 	"sort"
 )
-
-// todo Check the comments
 
 // Append a value to the array
 func Append(array []any, value any) []any {
@@ -19,18 +16,15 @@ func Length(array []any) int {
 }
 
 // Remove the value at the index
-// todo to upgrade with error
 func Remove(array []any, index int) []any {
 	if index < 0 || index >= len(array) {
-		fmt.Println("Error | The index isn't in the array")
-
+		panic("Error | The index isn't in the array")
 	}
 	array = append(array[:index], array[index+1:]...)
 	return array
 }
 
 // Find returns the index of the value in the array
-// todo to test
 func Find(array []any, value any) int {
 	size := Length(array)
 	for i := 0; i < size; i++ {
@@ -42,7 +36,6 @@ func Find(array []any, value any) int {
 }
 
 // Contain test if the value is in the array return True if inside and False if not inside
-// todo to test
 func Contain(array []any, value any) bool {
 	size := Length(array)
 	for i := 0; i < size; i++ {
@@ -54,7 +47,7 @@ func Contain(array []any, value any) bool {
 }
 
 // IsEqual test two array and return true if same or false if different
-func IsEqual(FirstArray []any, SecondArray []any) bool {
+func IsEqual(FirstArray, SecondArray []any) bool {
 	size := Length(FirstArray)
 	if Length(FirstArray) != Length(SecondArray) {
 		return false
@@ -69,7 +62,6 @@ func IsEqual(FirstArray []any, SecondArray []any) bool {
 }
 
 // SortAsc sorts the array in ascending order
-// todo to modify and upgrade
 func SortAsc(array []any) {
 	sort.Slice(array, func(i, j int) bool {
 		switch array[i].(type) {
@@ -86,7 +78,6 @@ func SortAsc(array []any) {
 }
 
 // SortDesc sorts the array in descending order
-// todo to modify and upgrade
 func SortDesc(array []any) {
 	sort.Slice(array, func(i, j int) bool {
 		switch array[i].(type) {
@@ -146,17 +137,21 @@ func lessThan(a any, b any) bool {
 	}
 }
 
-// Slice the array from start to end
-// todo to test
+// Slice the array from start to end included
 func Slice(array []any, start, end int) []any {
+	var arrRet []any
+
 	if start < 0 {
 		start = 0
 	}
-	if end > Length(array) {
-		end = Length(array)
+	if end > Length(array)-1 {
+		end = Length(array) - 1
 	}
 	if start >= end {
-		return make([]interface{}, 0)
+		panic("Error | Start superior or equal to the end")
 	}
-	return array[start : end+1]
+	for i := start; i <= end; i++ {
+		arrRet = append(arrRet, array[i])
+	}
+	return arrRet
 }
