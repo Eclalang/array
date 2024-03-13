@@ -1,86 +1,98 @@
 package array
 
 import (
-	"sort"
+	"errors"
+	"reflect"
+	"slices"
 )
 
-// Append a value to the array
-func Append(array []any, value any) []any {
-	array = append(array, value)
-	return array
-}
-
 // Contain test if the value is in the array return True if inside and False if not inside
-func Contain(array []any, value any) bool {
-	size := Length(array)
-	for i := 0; i < size; i++ {
-		if array[i] == value {
-			return true
+func Contain(array any, value any) (bool, error) {
+	if reflect.TypeOf(array).Kind() == reflect.Slice {
+		arr := array.([]any)
+		size := len(arr)
+		for i := 0; i < size; i++ {
+			if arr[i] == value {
+				return true, nil
+			}
 		}
+		return false, nil
+	} else {
+		return false, errors.New("array is not a slice")
 	}
-	return false
 }
 
 // Find returns the index of the value in the array
-func Find(array []any, value any) int {
-	size := Length(array)
-	for i := 0; i < size; i++ {
-		if array[i] == value {
-			return i
+func Find(array any, value any) (int, error) {
+	if reflect.TypeOf(array).Kind() == reflect.Slice {
+		arr := array.([]any)
+		size := len(arr)
+		for i := 0; i < size; i++ {
+			if arr[i] == value {
+				return i, nil
+			}
 		}
+		return -1, nil
 	}
-	return -1
+	return -1, errors.New("array is not a slice")
 }
 
 // IsEqual test two array and return true if same or false if different
-func IsEqual(FirstArray, SecondArray []any) bool {
-	size := Length(FirstArray)
-	if Length(FirstArray) != Length(SecondArray) {
-		return false
-	} else {
-		for i := 0; i < size; i++ {
-			if FirstArray[i] != SecondArray[i] {
-				return false
+func IsEqual(FirstArray, SecondArray any) (bool, error) {
+	if reflect.TypeOf(FirstArray).Kind() == reflect.Slice && reflect.TypeOf(SecondArray).Kind() == reflect.Slice {
+		firstArr := FirstArray.([]any)
+		secondArr := SecondArray.([]any)
+		size := len(firstArr)
+		if size != len(secondArr) {
+			return false, nil
+		} else {
+			for i := 0; i < size; i++ {
+				if firstArr[i] != secondArr[i] {
+					return false, nil
+				}
 			}
+			return true, nil
 		}
-		return true
 	}
-}
-
-// Length returns the length of the array
-func Length(array []any) int {
-	return len(array)
+	return false, errors.New("array is not a slice")
 }
 
 // Max returns the maximum value in the array
-func Max(array []any) any {
-	size := Length(array)
-	if size == 0 {
-		return nil
-	}
-
-	max := array[0]
-	for i := 1; i < size; i++ {
-		if lessThan(max, array[i]) {
-			max = array[i]
+func Max(array any) (any, error) {
+	if reflect.TypeOf(array).Kind() == reflect.Slice {
+		arr := array.([]any)
+		size := len(arr)
+		if size == 0 {
+			return nil, nil
 		}
+		max := arr[0]
+		for i := 1; i < size; i++ {
+			if lessThan(max, arr[i]) {
+				max = arr[i]
+			}
+		}
+		return max, nil
 	}
-	return max
+	return nil, errors.New("array is not a slice")
 }
 
 // Min returns the minimum value in the array
-func Min(array []any) any {
-	size := Length(array)
-	if size == 0 {
-		return nil
-	}
-	min := array[0]
-	for i := 1; i < size; i++ {
-		if lessThan(array[i], min) {
-			min = array[i]
+func Min(array any) (any, error) {
+	if reflect.TypeOf(array).Kind() == reflect.Slice {
+		arr := array.([]any)
+		size := len(arr)
+		if size == 0 {
+			return nil, nil
 		}
+		min := arr[0]
+		for i := 1; i < size; i++ {
+			if lessThan(arr[i], min) {
+				min = arr[i]
+			}
+		}
+		return min, nil
 	}
-	return min
+	return nil, errors.New("array is not a slice")
 }
 
 func lessThan(a any, b any) bool {
@@ -97,16 +109,52 @@ func lessThan(a any, b any) bool {
 }
 
 // Remove the value at the index
-func Remove(array []any, index int) []any {
-	if index < 0 || index >= len(array) {
-		return array
+func Remove(array any, index int) any {
+	typeArray := reflect.TypeOf(array)
+	if typeArray.Kind() == reflect.Slice {
+		switch typeArray.Elem().String() {
+		case "int":
+			arr := array.([]int)
+			if index < 0 || index >= len(arr) {
+				return arr
+			}
+			return slices.Delete(arr, index, index+1)
+		case "float64":
+			arr := array.([]float64)
+			if index < 0 || index >= len(arr) {
+				return arr
+			}
+			arr = append(arr[:index], arr[index+1:]...)
+			return arr
+		case "string":
+			arr := array.([]string)
+			if index < 0 || index >= len(arr) {
+				return arr
+			}
+			arr = append(arr[:index], arr[index+1:]...)
+			return arr
+		case "bool":
+			arr := array.([]bool)
+			if index < 0 || index >= len(arr) {
+				return arr
+			}
+			arr = append(arr[:index], arr[index+1:]...)
+			return arr
+		default:
+			arr := array.([]any)
+			if index < 0 || index >= len(arr) {
+				return arr
+			}
+			arr = append(arr[:index], arr[index+1:]...)
+			return arr
+		}
 	}
-	array = append(array[:index], array[index+1:]...)
-	return array
+	return errors.New("array is not a slice")
 }
 
+/*
 // Slice the array from start to end included
-func Slice(array []any, start, end int) []any {
+func Slice(array any, start, end int) (any, error) {
 	var arrRet []any
 
 	if start < 0 {
@@ -116,16 +164,16 @@ func Slice(array []any, start, end int) []any {
 		end = Length(array) - 1
 	}
 	if start >= end {
-		panic("Error | Start superior or equal to the end")
+		return nil, errors.New("start superior or equal to the end")
 	}
 	for i := start; i <= end; i++ {
 		arrRet = append(arrRet, array[i])
 	}
-	return arrRet
+	return arrRet, nil
 }
 
 // SortAsc sorts the array in ascending order
-func SortAsc(array []any) {
+func SortAsc(array any) {
 	sort.Slice(array, func(i, j int) bool {
 		switch array[i].(type) {
 		case int:
@@ -141,7 +189,7 @@ func SortAsc(array []any) {
 }
 
 // SortDesc sorts the array in descending order
-func SortDesc(array []any) {
+func SortDesc(array any) {
 	sort.Slice(array, func(i, j int) bool {
 		switch array[i].(type) {
 		case int:
@@ -155,3 +203,5 @@ func SortDesc(array []any) {
 		}
 	})
 }
+
+*/
