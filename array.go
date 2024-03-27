@@ -1,20 +1,17 @@
 package array
 
 import (
+	"cmp"
+	"errors"
+	"reflect"
 	"sort"
 )
 
-// Append a value to the array
-func Append(array []any, value any) []any {
-	array = append(array, value)
-	return array
-}
-
 // Contain test if the value is in the array return True if inside and False if not inside
-func Contain(array []any, value any) bool {
-	size := Length(array)
+func Contain[T comparable](array []T, value T) bool {
+	size := len(array)
 	for i := 0; i < size; i++ {
-		if array[i] == value {
+		if reflect.DeepEqual(array[i], value) {
 			return true
 		}
 	}
@@ -22,10 +19,10 @@ func Contain(array []any, value any) bool {
 }
 
 // Find returns the index of the value in the array
-func Find(array []any, value any) int {
-	size := Length(array)
+func Find[T comparable](array []T, value T) int {
+	size := len(array)
 	for i := 0; i < size; i++ {
-		if array[i] == value {
+		if reflect.DeepEqual(array[i], value) {
 			return i
 		}
 	}
@@ -33,125 +30,85 @@ func Find(array []any, value any) int {
 }
 
 // IsEqual test two array and return true if same or false if different
-func IsEqual(FirstArray, SecondArray []any) bool {
-	size := Length(FirstArray)
-	if Length(FirstArray) != Length(SecondArray) {
+func IsEqual[T comparable](FirstArray, SecondArray []T) bool {
+	size := len(FirstArray)
+	if size != len(SecondArray) {
 		return false
 	} else {
-		for i := 0; i < size; i++ {
-			if FirstArray[i] != SecondArray[i] {
-				return false
-			}
+		if reflect.DeepEqual(FirstArray, SecondArray) {
+			return true
 		}
-		return true
+		return false
 	}
-}
-
-// Length returns the length of the array
-func Length(array []any) int {
-	return len(array)
 }
 
 // Max returns the maximum value in the array
-func Max(array []any) any {
-	size := Length(array)
+func Max[T cmp.Ordered](array []T) (any, error) {
+	size := len(array)
 	if size == 0 {
-		return nil
+		return nil, errors.New("empty array")
 	}
-
-	max := array[0]
+	m := array[0]
 	for i := 1; i < size; i++ {
-		if lessThan(max, array[i]) {
-			max = array[i]
+		if m < array[i] {
+			m = array[i]
 		}
 	}
-	return max
+	return m, nil
 }
 
 // Min returns the minimum value in the array
-func Min(array []any) any {
-	size := Length(array)
+func Min[T cmp.Ordered](array []T) (any, error) {
+	size := len(array)
 	if size == 0 {
-		return nil
+		return nil, errors.New("empty array")
 	}
-	min := array[0]
+	m := array[0]
 	for i := 1; i < size; i++ {
-		if lessThan(array[i], min) {
-			min = array[i]
+		if array[i] < m {
+			m = array[i]
 		}
 	}
-	return min
-}
-
-func lessThan(a any, b any) bool {
-	switch a.(type) {
-	case int:
-		return a.(int) < b.(int)
-	case float64:
-		return a.(float64) < b.(float64)
-	case string:
-		return len(a.(string)) < len(b.(string))
-	default:
-		return false
-	}
+	return m, nil
 }
 
 // Remove the value at the index
-func Remove(array []any, index int) []any {
-	if index < 0 || index >= len(array) {
+func Remove[T comparable](array []T, index int) []T {
+	if len(array) <= index || index < 0 {
 		return array
 	}
-	array = append(array[:index], array[index+1:]...)
-	return array
+	return append(array[:index], array[index+1:]...)
 }
 
 // Slice the array from start to end included
-func Slice(array []any, start, end int) []any {
-	var arrRet []any
+func Slice[T comparable](array []T, start, end int) ([]T, error) {
+	var arrRet []T
 
 	if start < 0 {
 		start = 0
 	}
-	if end > Length(array)-1 {
-		end = Length(array) - 1
+	if end > len(array)-1 {
+		end = len(array) - 1
 	}
 	if start >= end {
-		panic("Error | Start superior or equal to the end")
+		return array, errors.New("start superior or equal to the end")
 	}
 	for i := start; i <= end; i++ {
 		arrRet = append(arrRet, array[i])
 	}
-	return arrRet
+	return arrRet, nil
 }
 
 // SortAsc sorts the array in ascending order
-func SortAsc(array []any) {
+func SortAsc[T cmp.Ordered](array []T) {
 	sort.Slice(array, func(i, j int) bool {
-		switch array[i].(type) {
-		case int:
-			return array[i].(int) < array[j].(int)
-		case float64:
-			return array[i].(float64) < array[j].(float64)
-		case string:
-			return array[i].(string) < array[j].(string)
-		default:
-			return false
-		}
+		return array[i] < array[j]
 	})
 }
 
 // SortDesc sorts the array in descending order
-func SortDesc(array []any) {
+func SortDesc[T cmp.Ordered](array []T) {
 	sort.Slice(array, func(i, j int) bool {
-		switch array[i].(type) {
-		case int:
-			return array[i].(int) > array[j].(int)
-		case float64:
-			return array[i].(float64) > array[j].(float64)
-		case string:
-			return array[i].(string) > array[j].(string)
-		default:
-			return false
-		}
+		return array[i] > array[j]
 	})
 }

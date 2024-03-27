@@ -1,17 +1,18 @@
-## ARRAY LIBRARY FOR ECLA
+# Array library
 
-# Candidate functions :
+[![Go Report Card](https://goreportcard.com/badge/github.com/Eclalang/array)](https://goreportcard.com/report/github.com/Eclalang/array)
+[![codecov](https://codecov.io/gh/Eclalang/array/graph/badge.svg?token=YNCIYERVBO)](https://codecov.io/gh/Eclalang/array)
 
-| Func Name |                         Prototype                         |                                          Description                                          | Comments |
-|:---------:|:---------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|:--------:|
-|  Append   |       func Append(array []any, value any) []any {}        |                                 Appends a value to the array                                  |   N/A    |
-|  Contain  |       func Contain(array []any, value any) bool {}        |                               Test if the value is in the array                               |   N/A    |
-|   Find    |         func Find(array []any, value any) int {}          | Returns the index of the value in the array <br/> (return -1 if the value isn't in the array) |   N/A    |
-|  IsEqual  | func IsEqual(FirstArray []any, SecondArray []any) bool {} |                          Test two array and check if they are equals                          |   N/A    |
-|  Length   |              func Length(array []any) int {}              |                                Returns the length of the array                                |   N/A    |
-|    Max    |               func Max(array []any) any {}                |                            Returns the maximum value in the array                             |   N/A    |
-|    Min    |               func Min(array []any) any {}                |                            Returns the minimum value in the array                             |   N/A    |
-|  Remove   |       func Remove(array []any, index int) []any {}        |                          Removes the value of the array at the index                          |   N/A    |
-|   Slice   |      func Slice(array []any, start, end int) any {}       |                              Slices the array from start to end                               |   N/A    |
-|  SortAsc  |               func SortAsc(array []any) {}                |                              Sorts the array in ascending order                               |   N/A    |
-| SortDesc  |               func SortDesc(array []any) {}               |                              Sorts the array in descending order                              |   N/A    |
+## Candidate functions :
+
+| Func Name |                              Prototype                              |                                          Description                                          | Comments |
+|:---------:|:-------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|:--------:|
+|  Contain  |       func Contain[T comparable](array []T, value T) bool {}        |                               Test if the value is in the array                               |   N/A    |
+|   Find    |         func Find[T comparable](array []T, value T) int {}          | Returns the index of the value in the array <br/> (return -1 if the value isn't in the array) |   N/A    |
+|  IsEqual  |   func IsEqual[T comparable](FirstArray, SecondArray []T) bool {}   |                          Test two array and check if they are equals                          |   N/A    |
+|    Max    |         func Max[T cmp.Ordered](array []T) (any, error) {}          |                            Returns the maximum value in the array                             |   N/A    |
+|    Min    |         func Min[T cmp.Ordered](array []T) (any, error) {}          |                            Returns the minimum value in the array                             |   N/A    |
+|  Remove   |       func Remove[T comparable](array []T, index int) []T {}        |                          Removes the value of the array at the index                          |   N/A    |
+|   Slice   | func Slice[T comparable](array []T, start, end int) ([]T, error) {} |                              Slices the array from start to end                               |   N/A    |
+|  SortAsc  |              func SortAsc[T cmp.Ordered](array []T) {}              |                              Sorts the array in ascending order                               |   N/A    |
+| SortDesc  |             func SortDesc[T cmp.Ordered](array []T) {}              |                              Sorts the array in descending order                              |   N/A    |
