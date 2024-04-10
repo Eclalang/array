@@ -55,6 +55,16 @@ func Max[T cmp.Ordered](array []T) (any, error) {
 		return nil, errors.New("empty array")
 	}
 	m := array[0]
+	if reflect.TypeOf(m).Kind() == reflect.String {
+		for i := 1; i < size; i++ {
+			if len(any(m).(string)) < len(any(array[i]).(string)) {
+				m = array[i]
+			} else if len(any(m).(string)) == len(any(array[i]).(string)) {
+				m = max(m, array[i])
+			}
+		}
+		return m, nil
+	}
 	for i := 1; i < size; i++ {
 		m = max(m, array[i])
 	}
@@ -68,6 +78,17 @@ func Min[T cmp.Ordered](array []T) (any, error) {
 		return nil, errors.New("empty array")
 	}
 	m := array[0]
+	if reflect.TypeOf(m).Kind() == reflect.String {
+		for i := 1; i < size; i++ {
+			if len(any(m).(string)) > len(any(array[i]).(string)) {
+				m = array[i]
+			} else if len(any(m).(string)) == len(any(array[i]).(string)) {
+				m = min(m, array[i])
+			}
+		}
+		return m, nil
+	}
+
 	for i := 1; i < size; i++ {
 		m = min(m, array[i])
 	}

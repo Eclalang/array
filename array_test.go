@@ -127,7 +127,7 @@ func TestIsEqual(t *testing.T) {
 func TestMax(t *testing.T) {
 	arrInt := []int{1, 20, 300, 44, 56}
 	arrFloat := []float64{100.1, 20.2, 3.346598, 458.9, 5.5}
-	arrString := []string{"one", "two", "three", "four", "fizzzzve"}
+	arrString := []string{"one", "two", "three", "fours", "five"}
 	var arrEmpty []int
 
 	// Test int
@@ -148,7 +148,7 @@ func TestMax(t *testing.T) {
 
 	// Test string
 	stringMax, _ := Max(arrString)
-	if stringMax == "two" {
+	if stringMax == "three" {
 		fmt.Println("Yes (3/4) | Array Max is set successfully for string")
 	} else {
 		t.Error("No (3/4) | Array Max isn't set successfully for string")
@@ -167,7 +167,7 @@ func TestMax(t *testing.T) {
 func TestMin(t *testing.T) {
 	arrInt := []int{1, 20, 300, 44, 56}
 	arrFloat := []float64{100.1, 20.2, 3.346598, 458.9, 5.5}
-	arrString := []string{"one", "two", "three", "four", "five"}
+	arrString := []string{"zero", "one", "two", "three", "four", "five"}
 	var arrEmpty []int
 
 	// Test int
@@ -188,7 +188,7 @@ func TestMin(t *testing.T) {
 
 	// Test string
 	stringMin, _ := Min(arrString)
-	if stringMin == "five" {
+	if stringMin == "one" {
 		fmt.Println("Yes (3/4) | Array Min is set successfully for string")
 	} else {
 		t.Error("No (3/4) | Array Min isn't set successfully for string")
