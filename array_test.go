@@ -7,13 +7,13 @@ import (
 )
 
 // TestContain test the function Contain with array of type int, float, string and boolean
-func TestContain(t *testing.T) {
+func TestContains(t *testing.T) {
 	arr := []any{1, 2, 3.3, 4.4, "five", "six", true, false}
 
 	// Test int
-	check1 := Contain(arr, 1)
-	check2 := Contain(arr, 2)
-	check3 := Contain(arr, 3)
+	check1 := Contains(arr, 1)
+	check2 := Contains(arr, 2)
+	check3 := Contains(arr, 3)
 	if check1 == true && check2 == true && check3 == false {
 		fmt.Println("Yes (1/4) | Array Find is set successfully for int")
 	} else {
@@ -21,9 +21,9 @@ func TestContain(t *testing.T) {
 	}
 
 	// Test float
-	check1 = Contain(arr, 3.3)
-	check2 = Contain(arr, 4.4)
-	check3 = Contain(arr, 5.5)
+	check1 = Contains(arr, 3.3)
+	check2 = Contains(arr, 4.4)
+	check3 = Contains(arr, 5.5)
 	if check1 == true && check2 == true && check3 == false {
 		fmt.Println("Yes (2/4) | Array Find is set successfully for float64")
 	} else {
@@ -31,9 +31,9 @@ func TestContain(t *testing.T) {
 	}
 
 	// Test string
-	check1 = Contain(arr, "five")
-	check2 = Contain(arr, "six")
-	check3 = Contain(arr, "seven")
+	check1 = Contains(arr, "five")
+	check2 = Contains(arr, "six")
+	check3 = Contains(arr, "seven")
 
 	if check1 == true && check2 == true && check3 == false {
 		fmt.Println("Yes (3/4) | Array Find is set successfully for string")
@@ -42,8 +42,8 @@ func TestContain(t *testing.T) {
 	}
 
 	// Test boolean
-	check1 = Contain(arr, true)
-	check2 = Contain(arr, false)
+	check1 = Contains(arr, true)
+	check2 = Contains(arr, false)
 	if check1 == true && check2 == true {
 		fmt.Println("Yes (4/4) | Array Find is set successfully for boolean")
 	} else {
@@ -127,7 +127,7 @@ func TestIsEqual(t *testing.T) {
 func TestMax(t *testing.T) {
 	arrInt := []int{1, 20, 300, 44, 56}
 	arrFloat := []float64{100.1, 20.2, 3.346598, 458.9, 5.5}
-	arrString := []string{"one", "two", "three", "four", "five"}
+	arrString := []string{"one", "two", "three", "fours", "five"}
 	var arrEmpty []int
 
 	// Test int
@@ -148,7 +148,7 @@ func TestMax(t *testing.T) {
 
 	// Test string
 	stringMax, _ := Max(arrString)
-	if stringMax == "two" {
+	if stringMax == "three" {
 		fmt.Println("Yes (3/4) | Array Max is set successfully for string")
 	} else {
 		t.Error("No (3/4) | Array Max isn't set successfully for string")
@@ -167,7 +167,7 @@ func TestMax(t *testing.T) {
 func TestMin(t *testing.T) {
 	arrInt := []int{1, 20, 300, 44, 56}
 	arrFloat := []float64{100.1, 20.2, 3.346598, 458.9, 5.5}
-	arrString := []string{"one", "two", "three", "four", "five"}
+	arrString := []string{"zero", "one", "two", "three", "four", "five"}
 	var arrEmpty []int
 
 	// Test int
@@ -188,7 +188,7 @@ func TestMin(t *testing.T) {
 
 	// Test string
 	stringMin, _ := Min(arrString)
-	if stringMin == "five" {
+	if stringMin == "one" {
 		fmt.Println("Yes (3/4) | Array Min is set successfully for string")
 	} else {
 		t.Error("No (3/4) | Array Min isn't set successfully for string")
@@ -336,70 +336,73 @@ func TestSlice(t *testing.T) {
 	}
 }
 
-// TestSortAsc test the function SortAsc with array of type int, float64 and string
-func TestSortAsc(t *testing.T) {
+// TestSort test the function Sort with array of type int, float64 and string
+func TestSort(t *testing.T) {
 	arrInt := []int{3, 6, 9, 2, 5, 8, 0, 1, 4, 7}
-	arrIntExpected := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	arrIntExpectedAscending := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	arrIntExpectedDescending := []int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
 	arrFloat := []float64{3.3, 6.6, 9.9, 2.2, 5.5, 8.8, 0.0, 1.1, 4.4, 7.7}
-	arrFloatExpected := []float64{0.0, 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9}
+	arrFloatExpectedAscending := []float64{0.0, 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9}
+	arrFloatExpectedDescending := []float64{9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 0.0}
 	arrString := []string{"a", "ccc", "bb", "eeeee", "dddd"}
-	arrStringExpected := []string{"a", "bb", "ccc", "dddd", "eeeee"}
+	arrStringExpectedAscending := []string{"a", "bb", "ccc", "dddd", "eeeee"}
+	arrStringExpectedDescending := []string{"eeeee", "dddd", "ccc", "bb", "a"}
 
-	SortAsc(arrInt)
-	SortAsc(arrFloat)
-	SortAsc(arrString)
+	// Test ascending order
+	Sort(arrInt, 0)
+	Sort(arrFloat, 0)
+	Sort(arrString, 0)
 
 	// Test array int
-	equal := IsEqual(arrInt, arrIntExpected)
+	equal := IsEqual(arrInt, arrIntExpectedAscending)
 	if equal {
-		fmt.Println("Yes (1/3) | Array SortAsc is set successfully for int")
+		fmt.Println("Yes (1/6) | Array Sort is set successfully for int in ascending order")
 	} else {
-		t.Error("No (1/3) | Array SortAsc isn't set successfully for int")
+		t.Error("No (1/6) | Array SortAsc isn't set successfully for int in ascending order")
 	}
 
 	// Test array float64
-	equal = IsEqual(arrFloat, arrFloatExpected)
+	equal = IsEqual(arrFloat, arrFloatExpectedAscending)
 	if equal {
-		fmt.Println("Yes (2/3) | Array SortAsc is set successfully for float64")
+		fmt.Println("Yes (2/6) | Array SortAsc is set successfully for float64 in ascending order")
 	} else {
-		t.Error("No (2/3) | Array SortAsc isn't set successfully for float64")
+		t.Error("No (2/6) | Array SortAsc isn't set successfully for float64 in ascending order")
 	}
 
 	// Test array string
-	equal = IsEqual(arrString, arrStringExpected)
+	equal = IsEqual(arrString, arrStringExpectedAscending)
 	if equal {
-		fmt.Println("Yes (3/3) | Array SortAsc is set successfully for string")
+		fmt.Println("Yes (3/6) | Array SortAsc is set successfully for string in ascending order")
 	} else {
-		t.Error("No (3/3) | Array SortAsc isn't set successfully for string")
+		t.Error("No (3/6) | Array SortAsc isn't set successfully for string in ascending order")
 	}
-}
 
-// TestSortDesc test the function SortAsc with array of type int, float64 and string
-func TestSortDesc(t *testing.T) {
-	arrInt := []int{3, 6, 9, 2, 5, 8, 0, 1, 4, 7}
-	arrIntExpected := []int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
-	arrFloat := []float64{3.3, 6.6, 9.9, 2.2, 5.5, 8.8, 0.0, 1.1, 4.4, 7.7}
-	arrFloatExpected := []float64{9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 0.0}
-	arrString := []string{"a", "ccc", "bb", "eeeee", "dddd"}
-	arrStringExpected := []string{"eeeee", "dddd", "ccc", "bb", "a"}
+	// Test descending order
+	Sort(arrInt, 1)
+	Sort(arrFloat, 1)
+	Sort(arrString, 1)
 
-	SortDesc(arrInt)
-	SortDesc(arrFloat)
-	SortDesc(arrString)
-
-	if IsEqual(arrInt, arrIntExpected) {
-		fmt.Println("Yes (1/3) | Array SortDesc is set successfully for int")
+	// Test array int
+	equal = IsEqual(arrInt, arrIntExpectedDescending)
+	if equal {
+		fmt.Println("Yes (4/6) | Array Sort is set successfully for int in descending order")
 	} else {
-		t.Error("No (1/3) | Array SortDesc isn't set successfully for int")
+		t.Error("No (4/6) | Array Sort isn't set successfully for int in descending order")
 	}
-	if IsEqual(arrFloat, arrFloatExpected) {
-		fmt.Println("Yes (2/3) | Array SortDesc is set successfully for float64")
+
+	// Test array float64
+	equal = IsEqual(arrFloat, arrFloatExpectedDescending)
+	if equal {
+		fmt.Println("Yes (5/6) | Array Sort is set successfully for float64 in descending order")
 	} else {
-		t.Error("No (2/3) | Array SortDesc isn't set successfully for float64")
+		t.Error("No (5/6) | Array Sort isn't set successfully for float64 in descending order")
 	}
-	if IsEqual(arrString, arrStringExpected) {
-		fmt.Println("Yes (3/3) | Array SortDesc is set successfully for string")
+
+	// Test array string
+	equal = IsEqual(arrString, arrStringExpectedDescending)
+	if equal {
+		fmt.Println("Yes (6/6) | Array Sort is set successfully for string in descending order")
 	} else {
-		t.Error("No (3/3) | Array SortDesc isn't set successfully for string")
+		t.Error("No (6/6) | Array Sort isn't set successfully for string in descending order")
 	}
 }
