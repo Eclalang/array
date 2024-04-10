@@ -3,12 +3,18 @@ package array
 import (
 	"cmp"
 	"errors"
+	"github.com/Eclalang/Ecla/interpreter/eclaType"
 	"reflect"
 	"sort"
 )
 
-// Contain test if the value is in the array return True if inside and False if not inside
-func Contain[T comparable](array []T, value T) bool {
+var Variables = map[string]eclaType.Type{
+	"ASC":  eclaType.Int(0),
+	"DESC": eclaType.Int(1),
+}
+
+// Contains test if the value is in the array return True if inside and False if not inside
+func Contains[T comparable](array []T, value T) bool {
 	size := len(array)
 	for i := 0; i < size; i++ {
 		if reflect.DeepEqual(array[i], value) {
@@ -50,9 +56,7 @@ func Max[T cmp.Ordered](array []T) (any, error) {
 	}
 	m := array[0]
 	for i := 1; i < size; i++ {
-		if m < array[i] {
-			m = array[i]
-		}
+		m = max(m, array[i])
 	}
 	return m, nil
 }
@@ -65,9 +69,7 @@ func Min[T cmp.Ordered](array []T) (any, error) {
 	}
 	m := array[0]
 	for i := 1; i < size; i++ {
-		if array[i] < m {
-			m = array[i]
-		}
+		m = min(m, array[i])
 	}
 	return m, nil
 }
@@ -99,16 +101,15 @@ func Slice[T comparable](array []T, start, end int) ([]T, error) {
 	return arrRet, nil
 }
 
-// SortAsc sorts the array in ascending order
-func SortAsc[T cmp.Ordered](array []T) {
-	sort.Slice(array, func(i, j int) bool {
-		return array[i] < array[j]
-	})
-}
-
-// SortDesc sorts the array in descending order
-func SortDesc[T cmp.Ordered](array []T) {
-	sort.Slice(array, func(i, j int) bool {
-		return array[i] > array[j]
-	})
+// Sort sorts the array in ascending or descending order
+func Sort[T cmp.Ordered](array []T, order int) {
+	if order == 0 {
+		sort.Slice(array, func(i, j int) bool {
+			return array[i] < array[j]
+		})
+	} else {
+		sort.Slice(array, func(i, j int) bool {
+			return array[i] > array[j]
+		})
+	}
 }
